@@ -72,4 +72,30 @@ pod/scwcom-74dc4585cf-d5ws8                1/1     Running   0          112s
 NAME                                                CLASS    HOSTS                     ADDRESS           PORTS   AGE
 ingress.networking.k8s.io/scwcom-ingress            <none>   sancapweather.com         192.168.100.174   80      112s
 ```
+## HomeLAN NATing from external IP address / port 80 to cluster's LAN address and ingress controller's port number.
+So, on my home LAN http://192.168.100.174:30410 is where incoming web traffic enters.  The ingress controller parses for sancapweather.com and redirects the traffic to the scwcom service. I have an external IP address for my home LAN that gets NAT'd by my home router to 192.168.100.174.  On that NAT box, I map port 80 to port 30410. As you can see from the get ingress command, I also am running a wordpress application with another URL, but also mapped to the same IP address and port number.  The ingress control does a reverse proxy function and splits the wordpress traffic off to the nginx-wordpress-ingress resource.
 
+## Check the web page http://sancapweather.com
+```
+[jkozik@dell2 k8sScw.com]$  kubectl -n ingress-nginx get service
+NAME                                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             NodePort    10.97.70.29     <none>        80:30140/TCP,443:30023/TCP   23d
+ingress-nginx-controller-admission   ClusterIP   10.111.250.10   <none>        443/TCP                      23d
+```
+## Check the web page http://sancapweather.com
+```
+[jkozik@dell2 k8sScw.com]$ curl -H "Host: sancapweather.com" 192.168.100.173:30140 | head
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  3706    0  3706    0     0    835      0 --:--:--  0:00:04 --:--:--   835<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!-- ##### start AJAX mods ##### -->
+    <script type="text/javascript" src="ajaxAWNwx.js"></script>
+    <!-- AJAX updates by Ken True - http://saratoga-weather.org/wxtemplates/ -->
+    <script type="text/javascript" src="ajaxgizmo.js"></script>
+    <script type="text/javascript" src="language-en.js"></script>
+        <!-- language for AJAX script included -->
+100  8004    0  8004    0     0   1804      0 --:--:--  0:00:04 --:--:--  2332
+```
