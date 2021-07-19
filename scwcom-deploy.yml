@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scwcom
+  labels:
+    app: scwcom
+spec:
+  selector:
+    matchLabels:
+      app: scwcom
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: scwcom
+    spec:
+      containers:
+      - image: jkozik/scw.com:v1
+        name: scwcom
+        ports:
+        - containerPort: 80
+          name: scwcom
