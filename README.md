@@ -1,4 +1,11 @@
 # k8sScw.com
+
+Setup sancapweather.com in a kubernetes cluster as deployment named scwcom; expose as service scwcom; connect to the internet as sancapweather.com through an ingress called scwcom-ingress. The ambientweather.net server collects the realtime data from the weather station in Sanibel.  The sancapweather.com uses apis from ambientweather to get the realtime data and render it... there is not volume storage for this application.
+
+Source image [InstallSCW.com](https://github.com/jkozik/InstallSCW.com)
+
+# build image, put on docker hub
+SanCapWeather.com is running in a docker container on my host, directly -- not in a VM.  To make it run in my kubernetes cluster, I need to push the image to my dockerhub repository.  The kubernetes deployment resource has an "image" field that triggers a pull of this image from dockerhub.
 ```
 [jkozik@dell2 k8sNw.net]$ docker tag jkozik/scw.com jkozik/scw.com:v1
 [jkozik@dell2 k8sNw.net]$ docker push jkozik/scw.com:v1
