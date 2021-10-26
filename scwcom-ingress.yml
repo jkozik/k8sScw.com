@@ -4,7 +4,12 @@ metadata:
   name: scwcom-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  tls:
+  - hosts:
+    - sancapweather.com
+    secretName: sancapweather-com-tls
   rules:
   - host: sancapweather.com
     http:
