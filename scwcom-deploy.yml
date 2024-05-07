@@ -16,7 +16,7 @@ spec:
         app: scwcom
     spec:
       containers:
-      - image: jkozik/scw.com:v1.8
+      - image: jkozik/scw.com:v1.91
         name: scwcom
         ports:
         - containerPort: 80
