@@ -16,7 +16,7 @@ spec:
         app: scwcom
     spec:
       containers:
-      - image: jkozik/scw.com:v1.10a
+      - image: jkozik/scw.com:v1.11
         name: scwcom
         imagePullPolicy: IfNotPresent
         resources:
